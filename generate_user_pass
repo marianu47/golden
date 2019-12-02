@@ -1,0 +1,14 @@
+---
+- hosts: all
+  gather_facts: false
+  tasks:
+    - set_fact:
+        usr_passwd: "{{ lookup('password', '/dev/null length=20') }}"
+
+    - debug:
+        var: usr_passwd
+
+    - user:
+        name: paddockint
+        password: "{{ usr_passwd | password_hash('sha512') }}"
+        
