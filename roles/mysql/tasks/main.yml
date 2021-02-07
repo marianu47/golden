@@ -1,0 +1,44 @@
+---
+# tasks file for mysql
+- name: download from a repository
+  get_url: 
+    url: https://dev.mysql.com/get/mysql57-community-release-el7-9.noarch.rpm
+    dest: /tmp/mysql57-community-release-el7-9.noarch.rpm 
+
+- name: mysql
+  yum:
+    name: /tmp/mysql57-community-release-el7-9.noarch.rpm
+    state: present
+
+- name: install mysql
+  yum: 
+    name: mysql-server
+    state: present
+
+- name: start and enable mysql
+  systemd:
+    name: mysqld
+    state: started
+    enabled: yes
+
+- name: default root password
+  shell: grep "temporary password" /var/log/mysqld.log  |awk '{print $11}' 
+  register: default_password
+
+
+- name: change root password
+  mysql_user:
+    check_implicit_admin: yes
+    host: localhost
+    name: root
+    password: "{{ mysql_password }}"
+    login_user: root
+    login_password: "{{ default_password.stdout }}"
+    state: present
+    priv: '*.*:ALL,GRANT'
+
+#- name: Create a database by passing the credentials
+#  mysql_db:
+#    login_user: root
+#    name: wordpress
+#    state: present

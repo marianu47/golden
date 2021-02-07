@@ -1,0 +1,38 @@
+---
+- name: Playbook one
+  hosts: all
+  become: true
+  become_user: root
+  tasks:
+    - name: Check ICMP response
+      ping:
+
+    - name: Create user
+      user: 
+        name: "{{ user  }}"
+        comment: Marian Pirvu
+      when: ansible_hostname != 'bianca-vm'
+    
+    - name: Create user directory
+      file: 
+        path: "{{ mydir  }}"
+        owner: "{{ user }}"
+        group: "{{ user }}"
+        mode: '0755'
+        state: directory
+    
+    - name: Copy config fle 
+      copy: 
+        src: /etc/ansible/hosts
+        dest: /tmp/Bianca/hosts
+        owner: ansible
+        group: ansible
+        mode: '0755'
+        backup: yes
+    
+    - name: Install java-jdk
+      yum: 
+        name: java-1.8.0-openjdk
+        state: latest
+      when: ansible_distribution == "CentOS"
+

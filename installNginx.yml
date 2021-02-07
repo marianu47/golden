@@ -1,0 +1,10 @@
+---
+- name: install nginx
+  hosts: all
+  become: "true"
+  tasks:
+    - include_role:
+        name: nginx
+    - include_role: 
+        name: mysql
+

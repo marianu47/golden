@@ -1,0 +1,6 @@
+idena01 ansible_host=34.91.61.179 ansible_user=ansible
+idena02 ansible_host=95.179.208.229 ansible_user=ansible
+
+[idena] 
+idena01
+idena02

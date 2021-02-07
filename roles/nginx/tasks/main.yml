@@ -1,0 +1,17 @@
+---
+- name: enable epel repo
+  yum:
+    name: epel-release
+    state: present
+
+- name: nginx
+  yum: 
+    name: nginx
+    state: present
+ 
+- name: nginx start
+  systemd:
+    name: nginx
+    state: started
+    enabled: yes
+
